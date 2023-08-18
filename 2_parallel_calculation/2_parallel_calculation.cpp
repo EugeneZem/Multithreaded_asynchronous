@@ -40,7 +40,7 @@ int main()
 	const int THR = 5;
 	const int CLC = 4;
 	int thrs [THR] = {1, 2, 4, 8, 16};
-	int calcs [CLC] = {1000, 10000, 100000, 1000000};
+	int calcs [CLC] = {1000, 10000, 100000, 10000000};
 	
 	double times_results [THR][CLC];
 	int best_times [THR];
