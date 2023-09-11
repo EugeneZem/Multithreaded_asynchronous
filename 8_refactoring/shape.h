@@ -1,4 +1,6 @@
 #pragma once
+//#include <iostream>
+#include <string>
 
 class point	
 {
@@ -12,12 +14,31 @@ class Shape
 {
 public:
 	Shape();
+	std::string name();
 	virtual double square();
 	virtual double volume();
+	virtual double lenght();
 	friend double len(point&, point&);
-	virtual void shift(int x, int y, int z);
+	virtual void shift(int x, int y, int z = 0);
+	virtual void scaleX(int);
+	virtual void scaleY(int);
+	virtual void scaleZ(int);
+	virtual void scale(int);
 protected:
-	const int _type = 2;
+	std::string _name;
+};
+
+class line:public Shape
+{
+public:
+	line(point begin, point end) : _begin(begin), _end(end) { _name = "LINE"; };
+	double lenght();
+	void shift(int x, int y, int z = 0);
+	void scaleX(int);
+	void scaleY(int);
+	void scale(int);
+protected:
+	point _begin, _end;
 };
 
 class planar_shape : public Shape
@@ -26,40 +47,32 @@ public:
 	planar_shape();
 };
 
-class line:public Shape
-{
-public:
-	line(point begin, point end) : _begin(begin), _end(end) {};
-	double lenght();
-	void shift(int x, int y, int z);
-protected:
-	point _begin, _end;
-	const int _type = 0;
-};
 
 class sqr : public planar_shape
 {
 public:
 	sqr(point& a, int len_size_1, int len_size_2);
 	double square();
-//	void shift(int x, int y, int z);
+	void shift(int x, int y, int z = 0);
 	friend class cube;
+	void scaleX(int);
+	void scaleY(int);
+	void scale(int);
 protected:
 	point _a, _b, _c, _d;
-	const int _type = 1;
 };
 
-class circle : planar_shape
+class circle : public planar_shape
 {
 public:
-	circle(point centr, int radius);
+	circle(const point& centr, int radius);
 	double square();
 	friend class cylinder;
+	void shift(int x, int y, int z = 0);
+	void scale(int);
 protected:
 	point _cntr;
 	int _r;
-	const int _type = 3;
-
 };
  
 class three_shape : public Shape
@@ -77,9 +90,13 @@ public:
 	cube(const sqr& base, int h);
 	double volume();
 	double square();
+	void shift(int x, int y, int z);
+	virtual void scaleX(int);
+	virtual void scaleY(int);
+	virtual void scaleZ(int);
+	virtual void scale(int);
 protected:
 	point _a, _b, _c, _d, _a2, _b2, _c2, _d2;
-	const int _type = 2;
 };
 
 class cylinder : public three_shape
@@ -88,8 +105,12 @@ public:
 	cylinder(const circle& base, int h);
 	double volume();
 	double square();
+	void shift(int x, int y, int z);
+	virtual void scaleX(int);
+	virtual void scaleY(int);
+	virtual void scaleZ(int);
+	virtual void scale(int);
 protected:
 	point _cntr;
 	int _h, _r;
-	const int _type = 4;
 };

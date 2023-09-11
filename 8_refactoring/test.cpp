@@ -1,6 +1,15 @@
 #include <iostream>
+#include <memory>
 #include "shape.h"
 #include "transform.h"
+
+void info(std::shared_ptr<Shape> sh)
+{
+	std::cout << std::endl << sh->name() << std::endl;
+	std::cout << "Lenght = " << sh->lenght() << std::endl;
+	std::cout << "Square = " << sh->square() << std::endl;
+	std::cout << "Volume = " << sh->volume() << std::endl;
+}
 
 int main()
 {
@@ -10,24 +19,36 @@ int main()
 	point d { 10, 10, 0 };
 	int h { 5 };
 
-	line line1 { a, d };
-	std::cout << "Lenght line1 = " << line1.lenght() << std::endl;
+	std::shared_ptr<Shape> test(new line{ a, b });
+	info(test);
+	//test->shift(20, 100);
+	//info(test);
+	test->scale(2);
+	info(test);
 
-	sqr sqr1 { b, 10, 10 };
-	std::cout << "Square sqr1 = " << sqr1.square() << std::endl;
-	sqr1.shift(0, 100, -100);
-	std::cout << "Square sqr1 = " << sqr1.square() << std::endl;
-
-	circle circle1(d, 10);
-	std::cout << "Square circle1 = " << circle1.square() << std::endl;
+	test.reset(new sqr{ b, 10, 10 });
+	test->shift(-20, -100);
+	info(test);
+	test->scale(2);
+	info(test);
 	
-	cube cube1 { sqr1, 20 };
-	std::cout << "Square cube1 = " << cube1.square() << std::endl;
-	std::cout << "Volume cube1 = " << cube1.volume() << std::endl;
+	test.reset(new circle{ d, 10 });
+	test->shift(-20, -100);
+	info(test);
+	test->scale(2);
+	info(test);
 
-	cylinder cylinder1{ circle1, 10 };
-	std::cout << "Square cylinder1 = " << cylinder1.square() << std::endl;
-	std::cout << "Volume cylinder1 = " << cylinder1.volume() << std::endl;
+	circle crc{ d, 10 };
+	test.reset(new cylinder{ crc, 10 });
+	test->shift(-100, -100, -100);
+	info(test);
+
+	sqr sq{ a, 1, 1 };
+	test.reset(new cube{ sq, 1 });
+	test->shift(10, 0, 0);
+	info(test);
+	test->scale(2);
+	info(test);
 
 	return 0;
 }
